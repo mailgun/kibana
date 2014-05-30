@@ -480,14 +480,16 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
             $scope.annotations = $scope.annotations.concat(_.map(results.hits.hits, function(hit) {
               var _p = _.omit(hit,'_source','sort','_score');
               var _h = _.extend(kbn.flatten_json(hit._source),_p);
+              var timestamp = $scope.panel.timezone === 'browser' ?
+                moment(hit.sort[1]).format('YYYY-MM-DD HH:mm:ss') :
+                moment.utc(hit.sort[1]).format('YYYY-MM-DD HH:mm:ss');
               return  {
                 min: hit.sort[1],
                 max: hit.sort[1],
                 eventType: "annotation",
                 title: null,
                 description: "<small><i class='icon-tag icon-flip-vertical'></i> "+
-                  _h[$scope.panel.annotate.field]+"</small><br>"+
-                  moment(hit.sort[1]).format('YYYY-MM-DD HH:mm:ss'),
+                  _h[$scope.panel.annotate.field]+"</small><br>"+timestamp,
                 score: hit.sort[0]
               };
             }));
