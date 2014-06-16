@@ -152,8 +152,7 @@ function (angular, app, _, $, kbn) {
         boolQuery,
         queries;
 
-      $scope.field = _.contains(fields.list,$scope.panel.field+'.raw') ?
-        $scope.panel.field+'.raw' : $scope.panel.field;
+      $scope.field = $scope.panel.field;
 
       request = $scope.ejs.Request().indices(dashboard.indices);
 
